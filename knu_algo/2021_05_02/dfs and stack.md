@@ -11,8 +11,8 @@ The graph is given as follows: graph[i] is a list of all nodes you can visit fro
   <img src="../images/graph.png" width="50%" alt="tile"></img>
 </p>
 
-문제풀이
-------
+문제풀이 1
+--------
 
 이 문제는 stack과 recursive를 이용해 해결할 수 있다.   
 주어진 해당 2차원 배열은 해당 인덱스에서 outgoing edge가 배열로 주어져 있다. 예를 들면 [[1,2,3]] 이면 0번 vertex는 1,2,3 vertex에 outgoing edge가 연결 되어 있다.   
@@ -34,4 +34,35 @@ The graph is given as follows: graph[i] is a list of all nodes you can visit fro
  
  위의 code를 간단히 설명하면 source -> destination 까지 계속 진행 하다가(stack push) destination에 도착하면 answer에 이동경로(stack)을 추가한다.   
  추가하고 돌아오면서 다른 vertex에 연결되어 있는지 확인한 후 pop()을 진행한다.   
+ 
+
+ 문제풀이 2
+ --------
+ 
+ 이 문제는 queue를 이용해 bfs 알고리즘을 이용해 해결할 수 있다.   
+
+  1. queue에는 현재 vertex지점과 방문했던 visited 배열을 저장한다.  
+  2. queue에서 pop을 한 후 pop을 한 현재 vertex와 현재 vertex와 연결된 다음 vertex를 이전에 방문했던 visited배열과 함께 저장한다.
+  3. queue가 비어질 때 까지 while문을 돌면서 pop()을 한 현재 vertex가 마지막 vertex가 되면 answer배열에 visited배열을 추가한다.   
+
+위의 풀이를 코드로 나타내면 다음과 같다.  
+
+ ```python
+    results = []
+    des = len(graph)-1 # 마지막 vertex
+    queue = [(0,[])] # (현재 vertex 지점, 방문한 visited 배열)
+ 
+    while queue: # queue가 비어질 때까지 loop
+      (current,visited) = queue.pop(0) # 현재지점과 방문한 visited배열 변수로 받기
+      visited.append(current) # visited 배열에 현재 지점 apppend
+      
+      if current == des: # 만약 현재 vertex가 마지막 vertex와 같을 때 경로 저장
+          answer.append(visited)
+          continue
+      
+      for nxt in graph[current]: # 그렇지 않다면 현재 vertex와 연결되어 있는 다른 vertex를 방문한 visited배열과 함께 apppend
+          tmp = [element for element in visited]
+          queue.append((nxt,tmp))
+ 
+ 
    
